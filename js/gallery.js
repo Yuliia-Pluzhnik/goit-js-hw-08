@@ -87,17 +87,16 @@ const images = [
     }
     
     container.addEventListener("click", handleClick);
-    
-    function handleClick(event) {
-        event.preventDefault();
-    
-        const listItem = event.target.closest(".gallery-item");
-        if (listItem) {
-            const largeLink = listItem.querySelector(".gallery-link");
-            const largeImage = largeLink.href;
-    
-            const instance = basicLightbox.create(`<img src="${largeImage}" width="800" height="600">`);
-            instance.show();
-        }
-    }
-    
+
+function handleClick(event) {
+    event.preventDefault();
+
+    const listItem = event.target.closest(".gallery-item");
+    if (!listItem) return;
+
+    const largeLink = listItem.querySelector(".gallery-link");
+    const largeImage = largeLink.href;
+
+    const instance = basicLightbox.create(`<img src="${largeImage}" width="800" height="600">`);
+    instance.show();
+}
