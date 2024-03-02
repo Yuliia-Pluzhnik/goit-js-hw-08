@@ -67,38 +67,37 @@ const images = [
 
 
     
-    const list = document.querySelector(".gallery");
+    const container = document.querySelector(".gallery");
 
-images.forEach(({ preview, original, description }) => {
-  const item = document.createElement("li");
-  item.classList.add("gallery-item");
-
-  const link = document.createElement("a");
-  link.classList.add("gallery-link");
-  link.href = original;
-
-  const image = document.createElement("img");
-  image.classList.add("gallery-image");
-  image.setAttribute("src", `${preview}`);
-  image.setAttribute("alt", `${description}`);
-  image.dataset.source = `${original}`;
-
-  link.appendChild(image);
-  item.appendChild(link);
-  list.appendChild(item);
-});
-
-list.addEventListener("click", handleClick);
-
-function handleClick(event) {
-    event.preventDefault();
-
-    const listItem = event.target.closest(".gallery-item");
-    if (listItem) {
-        const largeLink = listItem.querySelector(".gallery-link");
-        const largeImage = largeLink.href;
-
-        const instance = basicLightbox.create(`<img src="${largeImage}" width="800" height="600">`);
-        instance.show();
+    container.insertAdjacentHTML("beforeend", createMarkup(images));
+    
+    function createMarkup(arr) {
+        return arr.map(({ preview, original, description }) => `
+            <li class="gallery-item">
+                <a class="gallery-link" href="${original}">
+                    <img
+                        class="gallery-image"
+                        src="${preview}"
+                        data-source="${original}"
+                        alt="${description}"
+                    />
+                </a>
+            </li>
+        `).join("");
     }
-}
+    
+    container.addEventListener("click", handleClick);
+    
+    function handleClick(event) {
+        event.preventDefault();
+    
+        const listItem = event.target.closest(".gallery-item");
+        if (listItem) {
+            const largeLink = listItem.querySelector(".gallery-link");
+            const largeImage = largeLink.href;
+    
+            const instance = basicLightbox.create(`<img src="${largeImage}" width="800" height="600">`);
+            instance.show();
+        }
+    }
+    
